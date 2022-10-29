@@ -1,6 +1,7 @@
 <?php
 require_once('../ClassLibraries/MainClass.php');
 $mainPlug = new mainClass();
+$uploadStatus = 'none';
 
 
 // if(!isset($_SESSION['login']) || empty($_SESSION['login']))
@@ -52,59 +53,13 @@ $mainPlug = new mainClass();
 if(isset($_POST['blog_submit']))
 {
   $uploadStatus = $mainPlug->uploadBlog($_POST);
-  // print_r($uploadStatus);
-  // die();
-  if($uploadStatus == 'good')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.success('About Us Page Updated', 'Success');
-  });
-  </script>";
-  }elseif($uploadStatus == 'ext_err')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.error('Please check file extemsion acceptable extensions are: jpg, jpeg, png and svg', 'Invalid File');
-  });
-  </script>";
-  }elseif($uploadStatus == 'size_err')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.error('All files must be less than 1MB', 'Invalid File');
-  });
-  </script>";
-  }elseif($uploadStatus == 'dimension_err')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
-  });
-  </script>";
-  }
 }
 ?>
 
 
 
-<body>
+<body onload="notification();">
+<p id="status" style="display: none;"><?php echo $uploadStatus ?></p>
   <div class="container-scroller">
     <!-- partial:../partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -171,6 +126,13 @@ if(isset($_POST['blog_submit']))
             <a class="nav-link" href="#">
               <i class="icon-box menu-icon"></i>
               <span class="menu-title">Blog CMS</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="blogs.php">
+              <i class="icon-align-justify menu-icon"></i>
+              <span class="menu-title">Blog List</span>
             </a>
           </li>
         </ul>
@@ -297,23 +259,23 @@ if(isset($_POST['blog_submit']))
                   <!-- <form class="forms-sample" method="POST" action="" enctype="multipart/form-data"> -->
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 1</label>
+                      <label for="formFile" class="form-label">Upload Image Slide 1</label>
                       <input class="form-control" type="file" id="slider_input1" name="slider-img1" disabled>
                       </div>
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 2</label>
+                      <label for="formFile" class="form-label">Upload Image Slide 2</label>
                       <input class="form-control" type="file" id="slider_input2" name="slider-img2" disabled>
                       </div>
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 3</label>
+                      <label for="formFile" class="form-label">Upload Image Slide 3</label>
                       <input class="form-control" type="file" id="slider_input3" name="slider-img3" disabled>
                       </div>
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 4</label>
+                      <label for="formFile" class="form-label">Upload Image Slide 4</label>
                       <input class="form-control" type="file" id="slider_input4" name="slider-img4" disabled>
                       </div>
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 5</label>
+                      <label for="formFile" class="form-label">Upload Image Slide 5</label>
                       <input class="form-control" type="file" id="slider_input5" name="slider-img5" disabled>
                       </div>
                       <p style="color:red">Slide should be above 800 x 500 dimension</p>
@@ -360,8 +322,7 @@ if(isset($_POST['blog_submit']))
         <!-- partial:../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from Bootstrapdash.com</span>
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © Acacia</span>
           </div>
         </footer>
         <!-- partial -->
@@ -389,6 +350,68 @@ if(isset($_POST['blog_submit']))
   <script src="../js/select2.js"></script>
   <!-- End custom js for this page-->
 </body>
+
+<script>
+
+function notification() {
+  var status = $('#status').text(); 
+  // alert(status);
+    if(status == 'good'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.success('Blog Added', 'Success');
+      die();
+    }else if(status == 'ext_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('Please check file extemsion acceptable extensions are: jpg, jpeg and png', 'Invalid File');
+      die();
+    }else if(status == 'size_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('All files must be less than 1MB', 'Invalid File');
+      die();
+    }else if(status == 'dimension_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
+      die();
+    }
+
+    var slide_no = status.slice(-1);
+    var slider_status = status.slice(0, -1);
+    if(slider_status == 'ext_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('Please check file extemsion acceptable extensions are: jpg, jpeg and png', 'Invalid File On Slide '+slide_no);
+    }else if(slider_status == 'size_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('All files must be less than 1MB', 'Invalid File On Slide '+slide_no);
+    }else if(slider_status == 'dimension_err'){
+      toastr.options.positionClass = 'toast-top-center';
+      toastr.options.closeButton = true;
+      toastr.options.progressBar = true;
+      toastr.options.timeOut = 30000;
+      toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File On Slide '+slide_no);
+    }
+  }
+</script>
+
+
+
 
 <script>
   function selectMedia() {
@@ -459,6 +482,8 @@ if(isset($_POST['blog_submit']))
     $('#slider_submit_btn').prop('disabled', true);
 }
   }
+
+
 </script>
 
 </html>

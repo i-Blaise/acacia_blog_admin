@@ -205,6 +205,17 @@ class mainClass extends DataBase{
         }
 
       }
+
+
+
+
+      public function fetchBlogs()
+      {
+          // $myQuery = "SELECT id, blog_title, date_added FROM blogs";
+          $myQuery = "SELECT * FROM blog";
+          $result = mysqli_query($this->db, $myQuery);
+          return $result;
+      }
     
     }
 
