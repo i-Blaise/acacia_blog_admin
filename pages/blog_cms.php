@@ -39,14 +39,21 @@ $mainPlug = new mainClass();
       selector: '#mytextarea'
     });
   </script>
+
+    	<!-- Notification -->
+	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Toastr -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 
 <?php
 if(isset($_POST['blog_submit']))
 {
   $uploadStatus = $mainPlug->uploadBlog($_POST);
-  print_r($uploadStatus);
-  die();
+  // print_r($uploadStatus);
+  // die();
   if($uploadStatus == 'good')
   { 
       echo "     <script type='text/javascript'>   
@@ -329,11 +336,12 @@ if(isset($_POST['blog_submit']))
                   <!-- <form class="forms-sample"> -->
                     <div class="form-group">
                       <label for="exampleInputUsername1">Title</label>
-                      <input type="text" class="form-control" name="title" id="exampleInputUsername1" required>
+                      <input type="text" class="form-control" name="blog_title" id="exampleInputUsername1" required>
+                      <input type="hidden" class="form-control" name="unique_code" value="<?php echo uniqid('aca_blog'); ?>" id="exampleInputUsername1" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Blog</label>
-                        <textarea class="form-control" id="mytextarea" rows="4" name="blog" required> </textarea>
+                        <textarea class="form-control" id="mytextarea" rows="4" name="blog_body" required> </textarea>
                     </div>
 
                 </div>
