@@ -17,7 +17,7 @@ $uploadStatus = 'none';
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Regal Admin</title>
+  <title>Acacia Blog Admin</title>
   <!-- base:css -->
   <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../vendors/feather/feather.css">
@@ -37,7 +37,8 @@ $uploadStatus = 'none';
   <script src="../vendors/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
     tinymce.init({
-      selector: '#mytextarea'
+      selector: 'textarea#default-editor',
+      plugins: 'code'
     });
   </script>
 
@@ -53,6 +54,8 @@ $uploadStatus = 'none';
 if(isset($_POST['blog_submit']))
 {
   $uploadStatus = $mainPlug->uploadBlog($_POST);
+  // print_r($uploadStatus);
+  // die();
 }
 ?>
 
@@ -125,7 +128,7 @@ if(isset($_POST['blog_submit']))
           <li class="nav-item">
             <a class="nav-link" href="#">
               <i class="icon-box menu-icon"></i>
-              <span class="menu-title">Blog CMS</span>
+              <span class="menu-title">Post Blog</span>
             </a>
           </li>
           
@@ -302,8 +305,8 @@ if(isset($_POST['blog_submit']))
                       <input type="hidden" class="form-control" name="unique_code" value="<?php echo uniqid('aca_blog'); ?>" id="exampleInputUsername1" required>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Blog</label>
-                        <textarea class="form-control" id="mytextarea" rows="4" name="blog_body" required> </textarea>
+                      <label>Blog</label>
+                        <textarea class="form-control" id="default-editor" rows="4" name="blog_body" required> </textarea>
                     </div>
 
                 </div>
@@ -467,13 +470,12 @@ function notification() {
     // INPUT 
     $('#single_input').removeAttr("disabled");
     $('#single_input').prop('disabled', false);
-    $('#slider_input1').prop('disabled', false);
-    $('#slider_input2').prop('disabled', false);
-    $('#slider_input3').prop('disabled', false);
-    $('#slider_input4').prop('disabled', false);
-    $('#slider_input5').prop('disabled', false);
+    $('#slider_input1').prop('disabled', true);
+    $('#slider_input2').prop('disabled', true);
+    $('#slider_input3').prop('disabled', true);
+    $('#slider_input4').prop('disabled', true);
+    $('#slider_input5').prop('disabled', true);
     $('#video_input').prop('disabled', true);
-    $('#slider_input').prop('disabled', true);
 
     // BUTTON 
     $('#final_submit').removeAttr("disabled");

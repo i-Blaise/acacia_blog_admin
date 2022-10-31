@@ -79,6 +79,7 @@ class mainClass extends DataBase{
 
         switch ($data['radio']) {
             case "single":
+            $single = 1;
             $name = $_FILES["single_img"]["name"];
             $type = $_FILES["single_img"]["type"];
             $size = $_FILES["single_img"]["size"];
@@ -102,9 +103,9 @@ class mainClass extends DataBase{
             
 
             $myQuery = "INSERT INTO blog 
-            (unique_code, blog_single_img)
+            (unique_code, cover_img, single, blog_single_img)
             VALUES 
-            ('$unique_code','$single_img_link')";
+            ('$unique_code', '$single_img_link', '$single', '$single_img_link')";
   
             
             $result = mysqli_query($this->db, $myQuery);
@@ -115,7 +116,8 @@ class mainClass extends DataBase{
 
 
             case "slider":
-
+              
+              $slider = 1;
               $sliders = [];
               for($x = 1; $x <= 5; $x++){
                 $name = $_FILES["slider-img".$x]["name"];
@@ -154,6 +156,8 @@ class mainClass extends DataBase{
               $myQuery = "INSERT INTO blog 
               (
                 unique_code,
+                cover_img,
+                slider,
                 blog_slider1,
                 blog_slider2,
                 blog_slider3,
@@ -163,6 +167,8 @@ class mainClass extends DataBase{
               VALUES 
               (
                 '$unique_code',
+                '$blog_slider1',
+                '$slider',
                 '$blog_slider1',
                 '$blog_slider2',
                 '$blog_slider3',
@@ -175,16 +181,46 @@ class mainClass extends DataBase{
               if(!$result){
               return "Error: " .mysqli_error($this->db);
               }
+
+
+          case "video":
+              $video = 1;
+              $blog_video = isset($data['video_link']) ? filter_var($data['video_link'], FILTER_SANITIZE_STRING) : NULL;
+              $cover_img = 'http://localhost/acacia_blog_admin/images/uploads/20221030044418col-bottom-black-min-p-1080.png';
+
+              $myQuery = "INSERT INTO blog 
+              (
+                unique_code,
+                cover_img,
+                video,
+                blog_video
+              )
+              VALUES 
+              (
+                '$unique_code',
+                '$cover_img',
+                '$video',
+                '$blog_video'
+              )";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
         }
 
         $blog_title = filter_var($data['blog_title'], FILTER_SANITIZE_STRING);
-        $blog_body = filter_var($data['blog_body'], FILTER_SANITIZE_STRING);
-        $blog_video = isset($data['video_link']) ? filter_var($data['video_link'], FILTER_SANITIZE_STRING) : NULL;
+        $blog_link = 'http://localhost/acacia_blog/index.php?unique_code='.$unique_code;
+        $blog_body = $data['blog_body'];
+
+        // return $data['blog_body'];
+        // die();
 
              $myQuery = "UPDATE blog SET 
+            blog_link = '$blog_link',
             blog_title = '$blog_title',
-            blog_body = '$blog_body',
-            blog_video = '$blog_video'
+            blog_body = '$blog_body'
             WHERE unique_code = '$unique_code'";
 
         
@@ -213,6 +249,30 @@ class mainClass extends DataBase{
       {
           // $myQuery = "SELECT id, blog_title, date_added FROM blogs";
           $myQuery = "SELECT * FROM blog";
+          $result = mysqli_query($this->db, $myQuery);
+          return $result;
+      }
+
+      public function fetchBlogListMobile()
+      {
+          // $myQuery = "SELECT id, blog_title, date_added FROM blogs";
+          $myQuery = "SELECT id, unique_code, cover_img, blog_title FROM blog";
+          $result = mysqli_query($this->db, $myQuery);
+          return $result;
+      }
+
+      // public function fetchBlogPageMobile($code)
+      // {
+      //     // $myQuery = "SELECT id, blog_title, date_added FROM blogs";
+      //     $myQuery = "SELECT * FROM blog WHERE unique_code = '$code'";
+      //     $result = mysqli_query($this->db, $myQuery);
+      //     return $result;
+      // }
+
+      public function deleteBlog($id)
+      {
+          // $myQuery = "SELECT id, blog_title, date_added FROM blogs";
+          $myQuery = "DELETE FROM blog WHERE id = '$id'";
           $result = mysqli_query($this->db, $myQuery);
           return $result;
       }

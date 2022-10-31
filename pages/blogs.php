@@ -16,7 +16,7 @@ $mainPlug = new mainClass();
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Regal Admin</title>
+  <title>Acacia Blog Admin</title>
   <!-- base:css -->
   <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../vendors/feather/feather.css">
@@ -32,6 +32,7 @@ $mainPlug = new mainClass();
   <link rel="shortcut icon" href="../images/acacialogo_mini.png" />
   <!-- JQuery  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="jquery-3.6.0.min.js"></script>
   <!-- WYSIWYG Editor  -->
   <script src="../vendors/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
@@ -128,7 +129,7 @@ $blog_result = $mainPlug->fetchBlogs();
           <li class="nav-item">
             <a class="nav-link" href="blog_cms.php">
               <i class="icon-box menu-icon"></i>
-              <span class="menu-title">Blog CMS</span>
+              <span class="menu-title">Post Blog</span>
             </a>
           </li>
           <li class="nav-item">
@@ -169,13 +170,15 @@ $blog_result = $mainPlug->fetchBlogs();
                         </tr>
                       </thead>
                       <?php
+                        $id = 0;
                         while($row = mysqli_fetch_assoc($blog_result)){
                             $date = substr_replace($row['date_added'] ,"", -9);
+                          $id++;
                             ?>
                         <tbody>
-                        <tr>
+                        <tr id="row<?php echo $row['id']; ?>">
                           <td class="py-1">
-                          <?php echo $row['id']; ?>
+                          <?php echo $id; ?>
                           </td>
                           <td>
                           <?php echo $row['blog_title']; ?>
@@ -184,7 +187,7 @@ $blog_result = $mainPlug->fetchBlogs();
                           <?php echo $date; ?>
                           </td>
                           <td>
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger" onclick="deleteBlog(<?php echo $row['id']; ?>)">Delete</button>
                           </td>
                         </tr>
                       </tbody>
@@ -229,7 +232,33 @@ $blog_result = $mainPlug->fetchBlogs();
   <script src="../js/select2.js"></script>
   <!-- End custom js for this page-->
 </body>
-
+<script>
+function deleteBlog(blogID){
+  // alert(id);
+    // alert($('#row'+id).val());
+    // die();
+    let text = "Are you sure you want to delete this Blog Post? \n This action can't be undone.";
+    if (confirm(text) == true) {
+    document.getElementById("row"+blogID).remove();
+    var action = 'delete';
+    $.get("deleteBlog.php", {blogID: blogID, action: action}, 
+    function(){
+        // $('#row'+voucher_code).remove();
+        // toastr.options.closeButton = true;
+        // toastr.options.timeOut = 50;
+        // toastr.options.closeButton = true;
+        // toastr.options.progressBar = true;
+        // toastr.options.timeOut = 30000;
+        // toastr.options.positionClass = "toast-top-left";
+        toastr.options.positionClass = 'toast-top-center';
+        toastr.options.closeButton = true;
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 30000;
+        toastr.success('Blog Deleted', 'Success');
+    });
+  }
+}
+</script>
 
 
 </html>
